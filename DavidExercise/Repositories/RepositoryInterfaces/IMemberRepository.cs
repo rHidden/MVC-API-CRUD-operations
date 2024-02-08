@@ -8,5 +8,6 @@ namespace DavidExercise.Repositories.RepositoryInterfaces
         Task DeleteMember(int id);
         Task UpdateMember(Member member);
         Task<Member> GetMember(int id);
+        Task<List<Member>> ListMembers();
     }
 }

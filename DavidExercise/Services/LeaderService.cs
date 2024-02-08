@@ -11,6 +11,11 @@ namespace DavidExercise.Services
         {
             _leaderRepository = leaderRepository;
         }
+        public async Task<List<Leader>> ListLeaders()
+        {
+            var leaders = await _leaderRepository.ListLeaders();
+            return leaders;
+        }
         public async Task<Leader> CreateLeader(Leader leader)
         {
             var createdLeader = await _leaderRepository.CreateLeader(leader);

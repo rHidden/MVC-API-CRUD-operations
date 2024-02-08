@@ -103,6 +103,44 @@ namespace DavidExercise.Repositories
 
         }
 
+        public async Task<List<Member>> ListMembers()
+        {
+            using var con = _connectionFactory.CreateConnection();
+            await con.OpenAsync();
+            var sql = @"SELECT * FROM Member";
+
+            using (SqlCommand command = new SqlCommand(sql, con))
+            {
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    var members = new List<Member>();
+
+                    while (await reader.ReadAsync())
+                    {
+                        var member = new Member
+                        {
+                            ID = reader.GetInt32(reader.GetOrdinal("MemberId")),
+                            LeaderID = reader.GetInt32(reader.GetOrdinal("LeaderId")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"))
+                        };
+
+                        members.Add(member);
+                    }
+
+                    if (members.Count > 0)
+                    {
+                        await Console.Out.WriteLineAsync($"Info: Found {members.Count} members.");
+                    }
+                    else
+                    {
+                        await Console.Out.WriteLineAsync("Warning: No members were found.");
+                    }
+
+                    return members;
+                }
+            }
+        }
 
         public async Task UpdateMember(Member member)
         {

@@ -94,6 +94,44 @@ namespace DavidExercise.Repositories
             };
         }
 
+        public async Task<List<Leader>> ListLeaders()
+        {
+            using var con = _connectionFactory.CreateConnection();
+            await con.OpenAsync();
+            var sql = @"SELECT * FROM Leader";
+
+            using (SqlCommand command = new SqlCommand(sql, con))
+            {
+                using (var reader = await command.ExecuteReaderAsync())
+                {
+                    var leaders = new List<Leader>();
+
+                    while (await reader.ReadAsync())
+                    {
+                        var leader = new Leader
+                        {
+                            ID = reader.GetInt32(reader.GetOrdinal("LeaderId")),
+                            Name = reader.GetString(reader.GetOrdinal("Name")),
+                            PhoneNumber = reader.GetString(reader.GetOrdinal("PhoneNumber"))
+                        };
+
+                        leaders.Add(leader);
+                    }
+
+                    if (leaders.Count > 0)
+                    {
+                        await Console.Out.WriteLineAsync($"Info: Found {leaders.Count} leaders.");
+                    }
+                    else
+                    {
+                        await Console.Out.WriteLineAsync("Warning: No leaders were found.");
+                    }
+
+                    return leaders;
+                }
+            }
+        }
+
 
         public async Task UpdateLeader(Leader leader)
         {

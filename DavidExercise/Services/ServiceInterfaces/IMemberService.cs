@@ -9,5 +9,7 @@ namespace DavidExercise.Services.ServiceInterfaces
         Task UpdateMember(Member member);
         Task<Member> GetMember(int id);
         Task<Leader> PromoteMember(int id);
+        Task<List<Member>> ListMembers();
+
     }
 }

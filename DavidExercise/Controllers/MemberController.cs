@@ -1,4 +1,5 @@
 ﻿using DavidExercise.Models;
+using DavidExercise.Services;
 using DavidExercise.Services.ServiceInterfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -20,6 +21,18 @@ namespace DavidExercise.Controllers
         {
             var member = await _memberService.GetMember(Id);
             return Ok(member);
+        }
+
+        [HttpGet]
+        [Route("list")]
+        public async Task<IActionResult> ListMembersAsync()
+        {
+            List<Member> members = await _memberService.ListMembers();
+            if (!members.Any())
+            {
+                return NotFound();
+            }
+            return Ok(members);
         }
 
         [HttpPost]

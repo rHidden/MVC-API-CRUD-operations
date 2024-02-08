@@ -8,5 +8,6 @@ namespace DavidExercise.Services.ServiceInterfaces
         Task<Leader> CreateLeader(Leader leader);
         Task UpdateLeader(Leader leader);
         Task DeleteLeader(int id);
+        Task<List<Leader>> ListLeaders();
     }
 }

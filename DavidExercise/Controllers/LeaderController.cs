@@ -25,6 +25,18 @@ namespace DavidExercise.Controllers
             return Ok(leader);
         }
 
+        [HttpGet]
+        [Route("list")]
+        public async Task<IActionResult> ListLeadersAsync()
+        {
+            List<Leader> leaders = await _leaderService.ListLeaders();
+            if (!leaders.Any())
+            {
+                return NotFound();
+            }
+            return Ok(leaders);
+        }
+
 
         [HttpPost]
         [Route("create")]
